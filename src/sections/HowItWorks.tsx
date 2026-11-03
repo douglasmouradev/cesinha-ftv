@@ -61,12 +61,12 @@ export function HowItWorks() {
 
       <div
         ref={trackRef}
-        className="flex w-full flex-col gap-0 px-4 pb-[clamp(5rem,10vw,9rem)] md:w-max md:flex-row md:gap-0 md:px-8 md:will-change-transform"
+        className="flex w-full max-w-full flex-col gap-0 px-5 pb-[clamp(5rem,10vw,9rem)] md:w-max md:max-w-none md:flex-row md:gap-0 md:px-8 md:will-change-transform"
       >
         {CONTENT.steps.map((step) => (
           <article
             key={step.num}
-            className="flex w-full shrink-0 flex-col border-t border-ocean/15 py-10 md:w-[min(72vw,520px)] md:border-t-0 md:border-l md:px-10 md:py-6"
+            className="flex w-full min-w-0 max-w-full flex-col border-t border-ocean/15 py-10 md:w-[min(72vw,520px)] md:shrink-0 md:border-t-0 md:border-l md:px-10 md:py-6"
           >
             <p className="font-display text-[clamp(5rem,14vw,9rem)] leading-none text-ocean/12">
               {step.num}
