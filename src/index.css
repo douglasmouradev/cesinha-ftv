@@ -108,6 +108,13 @@ a {
   color: #f8c72d !important;
 }
 
+/* Esconde o FAB do WhatsApp enquanto o menu mobile está aberto */
+html.menu-open .whatsapp-float {
+  opacity: 0;
+  pointer-events: none;
+  visibility: hidden;
+}
+
 .container-site {
   width: min(100% - 2rem, var(--container));
   margin-inline: auto;
