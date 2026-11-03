@@ -38,12 +38,13 @@ export function Hero({ ready }: Props) {
   useEffect(() => {
     if (reduced || !bgRef.current) return
     const el = bgRef.current
+    const finePointer = window.matchMedia('(hover: hover) and (pointer: fine)')
+    if (!finePointer.matches) {
+      gsap.fromTo(el, { scale: 1.06 }, { scale: 1, duration: 6, ease: 'power1.out' })
+      return
+    }
 
-    gsap.fromTo(
-      el,
-      { scale: 1.08 },
-      { scale: 1, duration: 8, ease: 'power1.out' },
-    )
+    gsap.fromTo(el, { scale: 1.08 }, { scale: 1, duration: 8, ease: 'power1.out' })
 
     let raf = 0
     const onMove = (e: MouseEvent) => {
@@ -71,13 +72,13 @@ export function Hero({ ready }: Props) {
     <section
       id="topo"
       ref={rootRef}
-      className="relative min-h-[100svh] overflow-hidden bg-ocean text-sand"
+      className="relative min-h-[100svh] min-h-[100dvh] w-full overflow-hidden bg-ocean text-sand"
     >
-      {/* Full-bleed photo plane */}
+      {/* Full-bleed — sem inset negativo (evita buracos nas bordas no mobile) */}
       <div className="absolute inset-0 z-0 overflow-hidden">
         <div
           ref={bgRef}
-          className="absolute inset-[-4%] will-change-transform transition-transform duration-700 ease-out"
+          className="absolute inset-0 will-change-transform transition-transform duration-700 ease-out"
         >
           <img
             src="/images/hero.webp"
@@ -86,26 +87,22 @@ export function Hero({ ready }: Props) {
             height={2556}
             decoding="async"
             fetchPriority="high"
-            className="h-full w-full object-cover object-[center_28%]"
+            className="absolute inset-0 h-full w-full scale-105 object-cover object-[center_28%]"
           />
         </div>
         <div
-          className="absolute inset-0 bg-gradient-to-r from-ocean via-ocean/85 to-ocean/25 md:via-ocean/75 md:to-transparent"
-          aria-hidden="true"
-        />
-        <div
-          className="absolute inset-0 bg-gradient-to-t from-ocean via-transparent to-ocean/50"
+          className="absolute inset-0 bg-gradient-to-b from-ocean/80 via-ocean/55 to-ocean/90 md:bg-gradient-to-r md:from-ocean md:via-ocean/75 md:to-ocean/30"
           aria-hidden="true"
         />
       </div>
 
-      <div className="container-site relative z-[2] flex min-h-[100svh] flex-col justify-end pb-14 pt-[calc(var(--header-h)+2.5rem)] md:pb-20 md:justify-center">
+      <div className="container-site relative z-[2] flex min-h-[100svh] min-h-[100dvh] flex-col justify-end pb-[max(3.5rem,env(safe-area-inset-bottom))] pt-[calc(var(--header-h)+2rem)] md:justify-center md:pb-20">
         <div className="max-w-xl lg:max-w-2xl">
           <p className="hero-fade mb-5 font-body text-[0.8rem] font-medium text-sun opacity-0 md:text-[0.85rem]">
             {CONTENT.city} · {CONTENT.arena}
           </p>
 
-          <h1 className="font-display text-[clamp(3.2rem,10vw,6.5rem)]">
+          <h1 className="font-display text-[clamp(2.85rem,11vw,6.5rem)]">
             <span className="mask-reveal hero-line">
               <span>{CONTENT.hero.line1}</span>
             </span>
@@ -114,15 +111,15 @@ export function Hero({ ready }: Props) {
             </span>
           </h1>
 
-          <p className="hero-fade mt-6 max-w-md text-[1.05rem] leading-relaxed text-sand/80 opacity-0 md:text-[1.1rem]">
+          <p className="hero-fade mt-5 max-w-md text-[1.02rem] leading-relaxed text-sand/80 opacity-0 md:mt-6 md:text-[1.1rem]">
             {CONTENT.hero.subtitle}
           </p>
 
-          <div className="hero-fade mt-9 flex flex-wrap gap-3 opacity-0">
-            <Button href={LINKS.booking} variant="sun">
+          <div className="hero-fade mt-8 flex w-full flex-col gap-3 opacity-0 sm:mt-9 sm:w-auto sm:flex-row sm:flex-wrap">
+            <Button href={LINKS.booking} variant="sun" className="w-full sm:w-auto">
               Agendar aula
             </Button>
-            <Button href={LINKS.whatsapp} variant="ghost-light">
+            <Button href={LINKS.whatsapp} variant="ghost-light" className="w-full sm:w-auto">
               Falar no WhatsApp
             </Button>
           </div>
@@ -130,7 +127,7 @@ export function Hero({ ready }: Props) {
 
         <a
           href="#sobre"
-          className="hero-fade mt-16 inline-flex items-center gap-3 self-start text-[0.7rem] font-medium uppercase tracking-[0.18em] text-sand/45 opacity-0 transition-colors hover:text-sun md:mt-20"
+          className="hero-fade mt-12 inline-flex items-center gap-3 self-start text-[0.7rem] font-medium uppercase tracking-[0.18em] text-sand/45 opacity-0 transition-colors hover:text-sun md:mt-20"
         >
           <span className="block h-10 w-px bg-sand/30" aria-hidden="true" />
           Descer
