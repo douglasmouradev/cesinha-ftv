@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630" fill="none">
+  <rect width="1200" height="630" fill="#0A0A0A"/>
+  <rect x="0" y="560" width="1200" height="70" fill="#F8C72D"/>
+  <text x="80" y="220" fill="#F7F7F5" font-family="Arial Black, Helvetica, sans-serif" font-size="96" letter-spacing="8">CESINHA</text>
+  <text x="80" y="300" fill="#F8C72D" font-family="Arial Black, Helvetica, sans-serif" font-size="48" letter-spacing="10">FUTEVÔLEI</text>
+  <text x="80" y="380" fill="#F7F7F5" font-family="Helvetica, Arial, sans-serif" font-size="28" opacity="0.7">Aulas de futevôlei em Salvador</text>
+  <circle cx="980" cy="250" r="90" fill="#F8C72D"/>
+  <path d="M920 220c25 12 50 12 75 0M980 220c25 12 50 12 75 0M910 260c30 16 65 16 95 0M970 260c30 16 65 16 95 0" stroke="#0A0A0A" stroke-width="4" fill="none"/>
+</svg>

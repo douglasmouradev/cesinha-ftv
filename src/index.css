@@ -1,0 +1,242 @@
+@import 'tailwindcss';
+@import '@fontsource/bebas-neue/400.css';
+@import '@fontsource/dm-sans/400.css';
+@import '@fontsource/dm-sans/500.css';
+@import '@fontsource/dm-sans/700.css';
+
+/* ── Tokens de marca (extraídos do IG @cesinhafutevolei_ — preto + amarelo 🖤💛) ── */
+:root {
+  --sand: #f7f7f5;
+  --sand-deep: #e6e4de;
+  --ocean: #0a0a0a;
+  --ocean-light: #1a1a1a;
+  --sun: #f8c72d;
+  --sun-hot: #e0a800;
+  --ink: #0a0a0a;
+  --white: #ffffff;
+  --muted: color-mix(in srgb, var(--sand) 55%, transparent);
+
+  --font-display: 'Bebas Neue', Impact, 'Arial Narrow', sans-serif;
+  --font-body: 'DM Sans', system-ui, sans-serif;
+
+  --radius-btn: 4px;
+  --container: 1200px;
+  --header-h: 68px;
+}
+
+@theme inline {
+  --color-sand: var(--sand);
+  --color-sand-deep: var(--sand-deep);
+  --color-ocean: var(--ocean);
+  --color-ocean-light: var(--ocean-light);
+  --color-sun: var(--sun);
+  --color-sun-hot: var(--sun-hot);
+  --color-ink: var(--ink);
+  --font-display: var(--font-display);
+  --font-body: var(--font-body);
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  /* smooth só depois do 1º paint — no load, smooth + hash joga a página pro final */
+  scroll-padding-top: calc(var(--header-h) + 12px);
+}
+
+html.is-smooth-scroll {
+  scroll-behavior: smooth;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+body {
+  margin: 0;
+  font-family: var(--font-body);
+  font-weight: 400;
+  color: var(--ink);
+  background: var(--sand);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  overflow-x: hidden;
+}
+
+::selection {
+  background: var(--sun);
+  color: var(--ink);
+}
+
+:focus-visible {
+  outline: 2px solid var(--sun);
+  outline-offset: 3px;
+}
+
+img,
+svg,
+video {
+  display: block;
+  max-width: 100%;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+/* Links do header — cor explícita (text-sand/xx herda preto do body via a{color:inherit}) */
+.nav-link {
+  color: #f7f7f5 !important;
+}
+
+.nav-link:hover,
+.nav-link:focus-visible {
+  color: #f8c72d !important;
+}
+
+.container-site {
+  width: min(100% - 2rem, var(--container));
+  margin-inline: auto;
+}
+
+@media (min-width: 768px) {
+  .container-site {
+    width: min(100% - 3.5rem, var(--container));
+  }
+}
+
+.font-display {
+  font-family: var(--font-display);
+  font-weight: 400;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  line-height: 0.92;
+}
+
+.label-quiet {
+  font-family: var(--font-body);
+  font-size: 0.8rem;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  color: color-mix(in srgb, var(--sun) 90%, white);
+}
+
+/* Textura de areia/ruído sutil */
+.noise::before {
+  content: '';
+  pointer-events: none;
+  position: absolute;
+  inset: 0;
+  opacity: 0.025;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size: 180px 180px;
+  mix-blend-mode: overlay;
+  z-index: 1;
+}
+
+.section-pad {
+  padding-block: clamp(5.5rem, 11vw, 10rem);
+}
+
+.mask-reveal {
+  overflow: hidden;
+  display: block;
+}
+
+.mask-reveal > span {
+  display: block;
+  transform: translateY(110%);
+}
+
+/* Botão com preenchimento deslizante */
+.btn-fill {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  min-height: 52px;
+  padding: 0.95rem 1.85rem;
+  border-radius: var(--radius-btn);
+  font-family: var(--font-body);
+  font-size: 0.9rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  border: 1px solid transparent;
+  cursor: pointer;
+  transition:
+    color 0.3s ease,
+    background 0.3s ease,
+    border-color 0.3s ease,
+    transform 0.3s ease;
+}
+
+.btn-sun {
+  background: var(--sun);
+  color: var(--ink);
+  border-color: var(--sun);
+}
+
+.btn-sun:hover {
+  background: var(--sun-hot);
+  border-color: var(--sun-hot);
+  transform: translateY(-1px);
+}
+
+.btn-ghost-light {
+  background: transparent;
+  color: var(--sand);
+  border-color: color-mix(in srgb, var(--sand) 40%, transparent);
+}
+
+.btn-ghost-light:hover {
+  border-color: var(--sand);
+  background: color-mix(in srgb, var(--sand) 8%, transparent);
+}
+
+.btn-ghost-dark {
+  background: transparent;
+  color: var(--ocean);
+  border-color: color-mix(in srgb, var(--ocean) 30%, transparent);
+}
+
+.btn-ghost-dark:hover {
+  border-color: var(--ocean);
+  background: color-mix(in srgb, var(--ocean) 6%, transparent);
+}
+
+.photo-placeholder {
+  background: var(--ocean-light);
+  color: color-mix(in srgb, var(--sand) 70%, transparent);
+  display: grid;
+  place-items: center;
+  text-align: center;
+  font-size: 0.75rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  padding: 1rem;
+}
+
+.court-line {
+  stroke: currentColor;
+  stroke-width: 1;
+  fill: none;
+  opacity: 0.35;
+}
