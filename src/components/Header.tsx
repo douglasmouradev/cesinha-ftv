@@ -1,26 +1,64 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { LINKS, NAV_LINKS } from '../config/links'
 import { Button } from './Button'
 
 export function Header() {
   const [compact, setCompact] = useState(false)
   const [open, setOpen] = useState(false)
+  const scrollYRef = useRef(0)
 
   useEffect(() => {
-    const onScroll = () => setCompact(window.scrollY > 48)
+    const onScroll = () => {
+      if (document.documentElement.classList.contains('menu-open')) return
+      setCompact(window.scrollY > 48)
+    }
     onScroll()
     window.addEventListener('scroll', onScroll, { passive: true })
     return () => window.removeEventListener('scroll', onScroll)
   }, [])
 
   useEffect(() => {
-    document.body.style.overflow = open ? 'hidden' : ''
-    document.documentElement.classList.toggle('menu-open', open)
+    if (open) {
+      scrollYRef.current = window.scrollY
+      document.body.style.position = 'fixed'
+      document.body.style.top = `-${scrollYRef.current}px`
+      document.body.style.left = '0'
+      document.body.style.right = '0'
+      document.body.style.width = '100%'
+      document.documentElement.classList.add('menu-open')
+    } else {
+      const y = scrollYRef.current
+      document.body.style.position = ''
+      document.body.style.top = ''
+      document.body.style.left = ''
+      document.body.style.right = ''
+      document.body.style.width = ''
+      document.documentElement.classList.remove('menu-open')
+      window.scrollTo(0, y)
+    }
+
     return () => {
-      document.body.style.overflow = ''
+      document.body.style.position = ''
+      document.body.style.top = ''
+      document.body.style.left = ''
+      document.body.style.right = ''
+      document.body.style.width = ''
       document.documentElement.classList.remove('menu-open')
     }
   }, [open])
+
+  const closeMenu = () => setOpen(false)
+
+  const goToSection = (href: string) => {
+    closeMenu()
+    window.setTimeout(() => {
+      const el = document.querySelector(href)
+      if (el) {
+        el.scrollIntoView({ behavior: 'smooth', block: 'start' })
+        history.replaceState(null, '', href)
+      }
+    }, 60)
+  }
 
   return (
     <>
@@ -35,7 +73,14 @@ export function Header() {
           <a
             href="#topo"
             className="flex items-baseline gap-2.5 leading-none"
-            onClick={() => setOpen(false)}
+            onClick={(e) => {
+              e.preventDefault()
+              closeMenu()
+              window.setTimeout(() => {
+                window.scrollTo({ top: 0, behavior: 'smooth' })
+                history.replaceState(null, '', '#topo')
+              }, 60)
+            }}
           >
             <span className="font-display text-[1.85rem] tracking-[0.04em] text-sand md:text-[2.1rem]">
               CESINHA
@@ -62,13 +107,17 @@ export function Header() {
 
           <button
             type="button"
-            className="relative z-[70] grid size-11 place-items-center border border-sand/25 text-sand lg:hidden"
+            className="relative z-[70] grid size-11 shrink-0 place-items-center border border-sand/25 text-sand lg:hidden"
             aria-expanded={open}
             aria-controls="mobile-menu"
             aria-label={open ? 'Fechar menu' : 'Abrir menu'}
-            onClick={() => setOpen((v) => !v)}
+            onClick={(e) => {
+              e.preventDefault()
+              e.stopPropagation()
+              setOpen((v) => !v)
+            }}
           >
-            <span className="relative block h-3.5 w-5">
+            <span className="relative block h-3.5 w-5" aria-hidden="true">
               <span
                 className={`absolute left-0 h-0.5 w-full bg-current transition-transform ${
                   open ? 'top-1.5 rotate-45' : 'top-0'
@@ -89,7 +138,6 @@ export function Header() {
         </div>
       </header>
 
-      {/* Fora do header: fixed não fica preso pelo stacking/blur do topo */}
       <div
         id="mobile-menu"
         className={`fixed inset-0 z-[55] bg-ocean lg:hidden ${
@@ -98,7 +146,7 @@ export function Header() {
         aria-hidden={!open}
       >
         <nav
-          className="flex h-full flex-col justify-between px-6 pb-10 pt-[calc(var(--header-h)+1.5rem)]"
+          className="flex h-[100dvh] flex-col justify-between px-6 pb-10 pt-[calc(var(--header-h)+1.5rem)]"
           aria-label="Mobile"
         >
           <div className="flex flex-col gap-1">
@@ -106,8 +154,11 @@ export function Header() {
               <a
                 key={link.href}
                 href={link.href}
-                className="border-b border-sand/15 py-4 font-display text-[2.5rem] leading-none text-sand"
-                onClick={() => setOpen(false)}
+                className="mobile-nav-link border-b border-white/15 py-4 font-display text-[2.5rem] leading-none"
+                onClick={(e) => {
+                  e.preventDefault()
+                  goToSection(link.href)
+                }}
               >
                 {link.label}
               </a>

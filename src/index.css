@@ -108,6 +108,15 @@ a {
   color: #f8c72d !important;
 }
 
+.mobile-nav-link {
+  color: #f7f7f5 !important;
+}
+
+.mobile-nav-link:hover,
+.mobile-nav-link:focus-visible {
+  color: #f8c72d !important;
+}
+
 /* Esconde o FAB do WhatsApp enquanto o menu mobile está aberto */
 html.menu-open .whatsapp-float {
   opacity: 0;
